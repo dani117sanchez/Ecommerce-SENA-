@@ -22,7 +22,7 @@ namespace Ecommerce.WebAssembly.Servicios.Implementacion
 
         public async Task<ResponseDTO<bool>> Editar(CategoriaDTO modelo)
         {
-            var response = await _httpClient.PostAsJsonAsync("Categoria/Editar", modelo);
+            var response = await _httpClient.PutAsJsonAsync("Categoria/Editar", modelo);
             var result = await response.Content.ReadFromJsonAsync<ResponseDTO<bool>>();
             return result!;
         }
