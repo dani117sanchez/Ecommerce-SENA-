@@ -19,7 +19,7 @@
         </button>
         <div class="@NavMenuCssClass navbar-collapse d-sm-inline-flex justify-content-between">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <AuthorizeView role="Administrador">
+                <AuthorizeView Roles="Administrador">
 
                     <li class="nav-item" b-test><NavLink class="nav-link" href="dashboard"> Dashboard</NavLink></li>
                     <li class="nav-item"><NavLink class="nav-link" href="usuarios"> Usuarios</NavLink></li>
@@ -48,7 +48,7 @@
 
             <AuthorizeView>
                 <Authorized>
-                    <button class="btn btn-outline-dark ms-auto ms-md-0 me-3" type="button">Salir</button>
+                    <button class="btn btn-outline-dark ms-auto ms-md-0 me-3" type="button" @onclick='cerrarSesion'>Salir</button>
                 </Authorized>
                 <NotAuthorized>
                     <a class="btn btn-outline-dark ms-auto ms-md-0 me-3" href="/login">Iniciar sesion</a>

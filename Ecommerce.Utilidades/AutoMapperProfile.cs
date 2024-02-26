@@ -33,8 +33,8 @@ namespace Ecommerce.Utilidades
             CreateMap<DetalleVentaDTO, DetalleVenta>();
 
             //venta
-            CreateMap<Venta, DetalleVentaDTO>();
-            CreateMap<DetalleVentaDTO,Venta>();
+            CreateMap<Venta, VentaDTO>();
+            CreateMap<VentaDTO, Venta>();
 
 
         }
