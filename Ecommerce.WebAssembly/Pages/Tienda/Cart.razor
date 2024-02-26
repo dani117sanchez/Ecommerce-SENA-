@@ -4,6 +4,9 @@
 @inject IToastService toastService
 @inject NavigationManager _navServicio
 
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+
 
 <div class="row mt-4">
 
@@ -127,13 +130,13 @@
                 </EditForm>
 
                @* COMENTAR TODO ESTO*@
-                @* <AuthorizeView>
+                <AuthorizeView>
                     <NotAuthorized>
                         <div class="alert alert-danger mt-2" role="alert">
                             Debe iniciar sesion para poder realizar la compra
                         </div>
                     </NotAuthorized>
-                </AuthorizeView> *@
+                </AuthorizeView>
 
 
             </div>
@@ -147,9 +150,20 @@
     private decimal? TotalPagar = 0;
     private TarjetaDTO tarjeta = new TarjetaDTO();
 
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationState { get;  set; }
+
+
+
     protected override async Task OnInitializedAsync()
     {
         lista = await carritoServicio.DevolverCarrito();
+
+        var authState = await authenticationState;
+        if (authState.User.Identity.IsAuthenticated)
+        {
+            disabled = false;
+        }
     }
 
     private void Disminuir(int id)
@@ -168,11 +182,11 @@
     private void Aumentar(int id)
     {
         CarritoDTO item = lista.First(p => p.Producto.IdProducto == id);
-        
-            decimal? precioFinal = (item.Producto.PrecioOferta != 0 && item.Producto.PrecioOferta < item.Producto.Precio) ? item.Producto.PrecioOferta : item.Producto.Precio;
-            item.Cantidad++;
-            item.Total = item.Cantidad * precioFinal;
-        
+
+        decimal? precioFinal = (item.Producto.PrecioOferta != 0 && item.Producto.PrecioOferta < item.Producto.Precio) ? item.Producto.PrecioOferta : item.Producto.Precio;
+        item.Cantidad++;
+        item.Total = item.Cantidad * precioFinal;
+
 
     }
 
@@ -207,9 +221,12 @@
                 });
         }
 
+        var authState = await authenticationState;
+        string idUsuario = authState.User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).Single();
+
         VentaDTO modelo = new VentaDTO()
             {
-                IdUsuario = 1,
+                IdUsuario = Convert.ToInt32(idUsuario),
                 Total = lista.Sum(i => i.Total),
                 DetalleVenta = detalle
             };
