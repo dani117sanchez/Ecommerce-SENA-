@@ -10,7 +10,7 @@ namespace Ecommerce.DTO
     public class TarjetaDTO
     {
         [Required(ErrorMessage = "Ingrese TItular")]
-        public string? TItular { get; set; }
+        public string? Titular { get; set; }
 
         [Required(ErrorMessage = "Ingrese Numero Tarjeta")]
         public string? Numero { get; set; }
